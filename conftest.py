@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 URL = "https://stellarburgers.nomoreparties.site/"
 
 # Фикстура для запуска Chrome
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def chrome_driver():
     driver = webdriver.Chrome()
     yield driver
@@ -25,7 +25,7 @@ def open_chrome_site(chrome_driver):
 
 
 # Фикстура для запуска Firefox
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def firefox_driver():
     driver = webdriver.Firefox()
     yield driver
