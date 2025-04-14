@@ -5,6 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from locators import TestLocators
+
 URL = "https://stellarburgers.nomoreparties.site/"
 
 # Фикстура для запуска Chrome
@@ -19,7 +21,7 @@ def open_chrome_site(chrome_driver):
     def _open_site():
         chrome_driver.get(URL)
         WebDriverWait(chrome_driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//*[@id='root']/div/header/nav/a/p"))
+            EC.element_to_be_clickable(TestLocators.LOCATOR_ACCOUNT_LOGIN_BUTTON)
         )
     yield _open_site
 
@@ -36,7 +38,7 @@ def open_firefox_site(firefox_driver):
     def _open_site():
         firefox_driver.get(URL)
         WebDriverWait(firefox_driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//*[@id='root']/div/header/nav/a/p"))
+            EC.element_to_be_clickable(TestLocators.LOCATOR_ACCOUNT_LOGIN_BUTTON)
         )
     yield _open_site
 
@@ -85,8 +87,8 @@ def random_password_generator():
 def filling_login_form(chrome_driver):
     def _filling_login_form():
         # заполняем поля и нажимаем кнопку "Войти"
-        chrome_driver.find_element(By.XPATH, "//*[@id='root']/div/main/div/form/fieldset[1]/div/div/input").send_keys(
+        chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_EMAIL).send_keys(
             "EvgenyFurkalo65893@yandex.ru")
-        chrome_driver.find_element(By.XPATH, "//*[@id='root']/div/main/div/form/fieldset[2]/div/div/input").send_keys("465109")
-        chrome_driver.find_element(By.XPATH, "//button[contains(text(), 'Войти')]").click()
+        chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_PASSWORD).send_keys("465109")
+        chrome_driver.find_element(*TestLocators.LOCATOR_LOGIN_BUTTON).click()
     yield _filling_login_form

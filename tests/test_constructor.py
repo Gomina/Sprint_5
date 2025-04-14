@@ -5,6 +5,8 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from locators import TestLocators
+
 
 class TestConstructor:
 
@@ -13,13 +15,12 @@ class TestConstructor:
         # открыть сайт, дождаться загрузки
         open_chrome_site()
         # кликнуть на раздел "Соусы"
-        chrome_driver.find_element(By.XPATH, "//*[@id='root']/div/main/section[1]/div[1]/div[2]").click()
+        chrome_driver.find_element(*TestLocators.LOCATOR_SECTION_SAUCES).click()
         # кликнуть на раздел "Булки"
-        chrome_driver.find_element(By.XPATH, "//*[@id='root']/div/main/section[1]/div[1]/div[1]/span").click()
+        chrome_driver.find_element(*TestLocators.LOCATOR_BUN_SECTION).click()
         # проверяем, что элемент "Флюоресцентная булка" виден на странице
-        element_xpath = "//*[@id='root']/div/main/section[1]/div[2]/ul[1]/a[1]/img"
         element_visible = WebDriverWait(chrome_driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, element_xpath))
+            EC.visibility_of_element_located(TestLocators.LOCATOR_FLUORESCENT_BUN)
         )
         # утверждение, что элемент найден и виден
         assert element_visible
@@ -31,11 +32,10 @@ class TestConstructor:
         # открыть сайт, дождаться загрузки
         open_chrome_site()
         # кликнуть на раздел "Соусы"
-        chrome_driver.find_element(By.XPATH, "//*[@id='root']/div/main/section[1]/div[1]/div[2]").click()
+        chrome_driver.find_element(*TestLocators.LOCATOR_SECTION_SAUCES).click()
         # проверяем, что элемент "Соус Spicy-X" виден на странице
-        element_xpath = "//*[@id='root']/div/main/section[1]/div[2]/ul[2]/a[1]"
         element_visible = WebDriverWait(chrome_driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, element_xpath))
+            EC.visibility_of_element_located(TestLocators.LOCATOR_SPICY_X)
         )
         # утверждение, что элемент найден и виден
         assert element_visible
@@ -47,11 +47,10 @@ class TestConstructor:
         # открыть сайт, дождаться загрузки
         open_chrome_site()
         # кликнуть на раздел "Начинки"
-        chrome_driver.find_element(By.XPATH, "//*[@id='root']/div/main/section[1]/div[1]/div[3]/span").click()
+        chrome_driver.find_element(*TestLocators.LOCATOR_FILLING_SECTION).click()
         # проверяем, что элемент "Говяжий метеорит(отбивная)" виден на странице
-        element_xpath = "//*[@id='root']/div/main/section[1]/div[2]/ul[3]/a[2]/img"
         element_visible = WebDriverWait(chrome_driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, element_xpath))
+            EC.visibility_of_element_located(TestLocators.LOCATOR_BEEF_METEORITE)
         )
         # утверждение, что элемент найден и виден
         assert element_visible
