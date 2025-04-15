@@ -6,8 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from locators import TestLocators
+from urls import TestUrl
 
-URL = "https://stellarburgers.nomoreparties.site/"
 
 # Фикстура для запуска Chrome
 @pytest.fixture()
@@ -19,7 +19,7 @@ def chrome_driver():
 @pytest.fixture
 def open_chrome_site(chrome_driver):
     def _open_site():
-        chrome_driver.get(URL)
+        chrome_driver.get(TestUrl.URL_STELLAR_BURGERS)
         WebDriverWait(chrome_driver, 10).until(
             EC.element_to_be_clickable(TestLocators.LOCATOR_ACCOUNT_LOGIN_BUTTON)
         )
@@ -36,7 +36,7 @@ def firefox_driver():
 @pytest.fixture
 def open_firefox_site(firefox_driver):
     def _open_site():
-        firefox_driver.get(URL)
+        firefox_driver.get(TestUrl.URL_STELLAR_BURGERS)
         WebDriverWait(firefox_driver, 10).until(
             EC.element_to_be_clickable(TestLocators.LOCATOR_ACCOUNT_LOGIN_BUTTON)
         )
