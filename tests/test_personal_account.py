@@ -31,8 +31,7 @@ class TestAccount:
         name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
         # Проверяем, что значение поля "Имя" равно "Евгения"
         assert name_field.get_attribute('value') == 'Евгения'
-        # выход из браузера
-        chrome_driver.quit()
+
 
     # Вход через кнопку «Личный кабинет»
     def test_login_account_button_personal_account(self, chrome_driver, open_chrome_site, filling_login_form):
@@ -50,8 +49,7 @@ class TestAccount:
         name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
         # Проверяем, что значение поля "Имя" равно "Евгения"
         assert name_field.get_attribute('value') == 'Евгения'
-                # выход из браузера
-        chrome_driver.quit()
+
 
     # Вход через кнопку в форме регистрации
     def test_login_account_registration_form(self, chrome_driver, open_chrome_site, random_name,random_login_generator, random_password_generator):
@@ -75,7 +73,7 @@ class TestAccount:
         # клик кнопки "Зарегистироваться"
         chrome_driver.find_element(*TestLocators.LOCATOR_REGISTRATION_BUTTON).click()
         # заходим в личный кабинет
-        WebDriverWait(chrome_driver, 30).until(
+        WebDriverWait(chrome_driver, 10).until(
             EC.presence_of_element_located(TestLocators.LOCATOR_LOGIN_BUTTON)
         )
         chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_EMAIL).send_keys(
@@ -94,11 +92,10 @@ class TestAccount:
         name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
         # проверка, что в поле отображается правильное имя
         assert name_field.get_attribute('value') == random_name_here
-        # выход из браузера
-        chrome_driver.quit()
+
 
         # Вход через кнопку в форме восстановления пароля
-    def test_login_account_password_recovery(self,  firefox_driver, open_firefox_site, filling_login_form):
+    #def test_login_account_password_recovery(self,  firefox_driver, open_firefox_site, filling_login_form):
         # открыть сайт, дождаться загрузки
         open_firefox_site()
         # Клик кнопки "Личный кабинет"
@@ -122,8 +119,7 @@ class TestAccount:
             current_url = firefox_driver.current_url
             expected_url = "https://stellarburgers.nomoreparties.site/reset-password"
             assert current_url == expected_url
-        # выход из браузера
-            firefox_driver.quit()
+
 
     #Переход в личный кабинет
     def test_go_to_personal_account(self, chrome_driver, open_chrome_site, filling_login_form):
@@ -142,8 +138,7 @@ class TestAccount:
         name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
         # Проверяем, что значение поля "Имя" равно "Евгения"
         assert name_field.get_attribute('value') == 'Евгения'
-        # выход из браузера
-        chrome_driver.quit()
+
 
     # Переход из личного кабинета в конструктор по клику на «Конструктор»
     def test_from_personal_account_button_constructor(self, chrome_driver, open_chrome_site, filling_login_form):
@@ -161,8 +156,7 @@ class TestAccount:
         current_url = chrome_driver.current_url
         expected_url = "https://stellarburgers.nomoreparties.site/"
         assert current_url == expected_url
-        # выход из браузера
-        chrome_driver.quit()
+
 
     # Переход из личного кабинета в конструктор по клику на логотип Stellar Burgers
     def test_from_personal_account_Stellar_Burgers_logo(self, chrome_driver, open_chrome_site, filling_login_form):
@@ -180,11 +174,10 @@ class TestAccount:
         current_url = chrome_driver.current_url
         expected_url = "https://stellarburgers.nomoreparties.site/"
         assert current_url == expected_url
-        # выход из браузера
-        chrome_driver.quit()
+
 
     # Выход по кнопке «Выйти» в личном кабинете.
-    #def test_exit_from_personal_account(self, chrome_driver, open_chrome_site, filling_login_form):
+# def test_exit_from_personal_account(chrome_driver, open_chrome_site, filling_login_form):
         # открыть сайт, дождаться загрузки
         open_chrome_site()
         # клик кнопки "Личный кабинет"
@@ -203,5 +196,3 @@ class TestAccount:
         current_url = chrome_driver.current_url
         expected_url = "https://stellarburgers.nomoreparties.site/login"
         assert current_url == expected_url
-        # выход из браузера
-        chrome_driver.quit()

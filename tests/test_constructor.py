@@ -24,8 +24,7 @@ class TestConstructor:
         )
         # утверждение, что элемент найден и виден
         assert element_visible
-        # выход из браузера
-        chrome_driver.quit()
+
 
     # переход к разделу «Соусы» осуществляется
     def test_go_to_section_sauces(self, chrome_driver, open_chrome_site):
@@ -39,8 +38,7 @@ class TestConstructor:
         )
         # утверждение, что элемент найден и виден
         assert element_visible
-        # выход из браузера
-        chrome_driver.quit()
+
 
     # переход к разделу «Начинки» осуществляется
     def test_go_to_section_fillings(self, chrome_driver, open_chrome_site):

@@ -29,7 +29,7 @@ class TestRegistration:
             # клик кнопки "Зарегистироваться"
             chrome_driver.find_element(*TestLocators.LOCATOR_REGISTRATION_BUTTON).click()
             # заходим в личный кабинет
-            WebDriverWait(chrome_driver, 30).until(
+            WebDriverWait(chrome_driver, 10).until(
                 EC.presence_of_element_located(TestLocators.LOCATOR_LOGIN_BUTTON)
             )
             chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_EMAIL).send_keys(random_login_generator_here)
@@ -39,16 +39,15 @@ class TestRegistration:
             # клик на "Личный кабинет"
             chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
             # Ожидание, пока поле станет доступным для чтения
-            WebDriverWait(chrome_driver, 60).until(
+            WebDriverWait(chrome_driver, 30).until(
                 EC.presence_of_element_located(TestLocators.LOCATOR_FIELD_NAME))
             # Нахождение элемента с именем пользователя
             name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
             # Проверка, что в поле отображается правильное имя
             assert name_field.get_attribute('value') == random_name_here
-            # выход из браузера
-            chrome_driver.quit()
 
-    #Регистрация с неверным паролем
+
+    #Регистрация с некорректным паролем
     def test_registration_bad_password(self, chrome_driver,open_chrome_site, random_name, random_login_generator):
         # открыть сайт, дождаться загрузки
         open_chrome_site()
@@ -73,5 +72,3 @@ class TestRegistration:
         error_message = chrome_driver.find_element(*TestLocators.LOCATOR_INCORRECT_PASSWORD)
         # проверка, что текст ошибки соответствует ожидаемому
         assert error_message.text == "Некорректный пароль"
-        # выход из браузера
-        chrome_driver.quit()
