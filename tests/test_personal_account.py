@@ -6,14 +6,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.wait import WebDriverWait
 
 from locators import TestLocators
-
-URL = "https://stellarburgers.nomoreparties.site/"
+from data import TestData
 
 class TestAccount:
 
     # Вход по кнопке «Войти в аккаунт» на главной странице
-    def test_login_account_button_login_in_account(self, chrome_driver, filling_login_form, ):
-        chrome_driver.get(URL)
+    def test_login_account_button_login_in_account(self, chrome_driver, open_chrome_site, filling_login_form, ):
+        open_chrome_site()
         # ожидание загрузки главной страницы
         WebDriverWait(chrome_driver, 20).until(
             EC.visibility_of_element_located(TestLocators.LOCATOR_ACCOUNT_LOGIN_BUTTON)
@@ -25,12 +24,12 @@ class TestAccount:
         # проверка, что в поле Имя, указано имя "Евгения"
         chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
         # Дождаться появления элемента
-        WebDriverWait(chrome_driver, 10).until(
+        WebDriverWait(chrome_driver, 20).until(
             EC.presence_of_element_located(TestLocators.LOCATOR_FIELD_NAME)
         )
         name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
         # Проверяем, что значение поля "Имя" равно "Евгения"
-        assert name_field.get_attribute('value') == 'Евгения'
+        assert name_field.get_attribute('value') == TestData.DATA_NAME
 
 
     # Вход через кнопку «Личный кабинет»
@@ -44,11 +43,11 @@ class TestAccount:
         # проверка, что в поле Имя, указано имя "Евгения"
         chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
         # Ожидание, пока поле станет доступным для чтения
-        WebDriverWait(chrome_driver, 10).until(
+        WebDriverWait(chrome_driver, 20).until(
             EC.presence_of_element_located(TestLocators.LOCATOR_FIELD_NAME))
         name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
         # Проверяем, что значение поля "Имя" равно "Евгения"
-        assert name_field.get_attribute('value') == 'Евгения'
+        assert name_field.get_attribute('value') == TestData.DATA_NAME
 
 
     # Вход через кнопку в форме регистрации
@@ -95,30 +94,26 @@ class TestAccount:
 
 
         # Вход через кнопку в форме восстановления пароля
-    #def test_login_account_password_recovery(self,  firefox_driver, open_firefox_site, filling_login_form):
+    def test_login_account_password_recovery(self, chrome_driver, open_chrome_site, filling_login_form):
         # открыть сайт, дождаться загрузки
-        open_firefox_site()
-        # Клик кнопки "Личный кабинет"
-        modal = firefox_driver.find_element(By.CLASS_NAME, "Modal_modal_overlay__x2ZCr")
-        if modal.is_displayed():
-            close_button = firefox_driver.find_element(By.CSS_SELECTOR,
-                                               ".modal-close-button")
-            close_button.click()
-            # Найти элемент "Восстановить пароль"
-            restore_password_link =firefox_driver.find_element(By.XPATH, "//*[@id='root']/div/main/div/div/p[2]/a")
-            # Прокрутить страницу до элемента и кликнуть
-            firefox_driver.execute_script("arguments[0].scrollIntoView();", restore_password_link)
-            restore_password_link.click()
-        #в поле Email ввод адреса почты
-            time.sleep(5)
-            firefox_driver.find_element(By.XPATH, "//*[@id='root']/div/main/div/form/fieldset/div/div/input").send_keys(
-                "EvgenyFurkalo65893@yandex.ru")
+        open_chrome_site()
+        # клик кнопки "Личный кабинет"
+        chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
+        # клик "Восстановить пароль"
+        chrome_driver.find_element(*TestLocators.LOCATOR_PASSWORD_RECOVERY).click()
+        # в поле Email ввод адреса почты
+        WebDriverWait(chrome_driver, 10).until(
+            EC.presence_of_element_located(TestLocators.LOCATOR_EMAIL_PASSWORD_RECOVERY)
+        ).send_keys(TestData.DATA_EMAIL)
         # клик кнопки "Восстановить"
-            firefox_driver.find_element(By.XPATH, "//*[@id='root']/div/main/div/form/button").click()
+        chrome_driver.find_element(*TestLocators. LOCATOR_RECOVER_BUTTON).click()
         # проверка, что открылось окно "Восстановление пароля" - URL "...reset-password"
-            current_url = firefox_driver.current_url
-            expected_url = "https://stellarburgers.nomoreparties.site/reset-password"
-            assert current_url == expected_url
+        WebDriverWait(chrome_driver, 5).until(
+            EC.url_to_be("https://stellarburgers.nomoreparties.site/reset-password")
+        )
+        current_url = chrome_driver.current_url
+        expected_url = "https://stellarburgers.nomoreparties.site/reset-password"
+        assert current_url == expected_url
 
 
     #Переход в личный кабинет
@@ -137,7 +132,7 @@ class TestAccount:
         )
         name_field = chrome_driver.find_element(*TestLocators.LOCATOR_FIELD_NAME)
         # Проверяем, что значение поля "Имя" равно "Евгения"
-        assert name_field.get_attribute('value') == 'Евгения'
+        assert name_field.get_attribute('value') == TestData.DATA_NAME
 
 
     # Переход из личного кабинета в конструктор по клику на «Конструктор»
@@ -177,22 +172,22 @@ class TestAccount:
 
 
     # Выход по кнопке «Выйти» в личном кабинете.
-# def test_exit_from_personal_account(chrome_driver, open_chrome_site, filling_login_form):
-        # открыть сайт, дождаться загрузки
-        open_chrome_site()
-        # клик кнопки "Личный кабинет"
-        chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
-        # заполнение полей и клик кнопки "Войти"
-        filling_login_form()
-        # клик кнопки "Личный кабинет"
-        chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
-        # ожидание загрузки и клик кнопки "Выход"
-        WebDriverWait(chrome_driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//button[contains(@class, 'Account_button__') and contains(normalize-space(), 'Выход')]"))
-        )
-        chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
-        # проверка, что открылась страница "Вход"
-        time.sleep(10)
-        current_url = chrome_driver.current_url
-        expected_url = "https://stellarburgers.nomoreparties.site/login"
-        assert current_url == expected_url
+    def test_exit_from_personal_account(self, chrome_driver, open_chrome_site, filling_login_form):
+            # открыть сайт
+            open_chrome_site()
+            # клик кнопки "Личный кабинет"
+            chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
+            # заполнение полей и клик кнопки "Войти"
+            filling_login_form()
+            # клик кнопки "Личный кабинет"
+            chrome_driver.find_element(*TestLocators.LOCATOR_PERSONAL_ACCOUNT_BUTTON).click()
+            # ожидание загрузки и клик кнопки "Выход"
+            WebDriverWait(chrome_driver, 10).until(
+                EC.presence_of_element_located(TestLocators.LOCATOR_EXIT_BUTTON)
+            ).click()
+            WebDriverWait(chrome_driver, 5).until(
+                EC.url_to_be("https://stellarburgers.nomoreparties.site/login")
+            )
+            current_url = chrome_driver.current_url
+            expected_url = "https://stellarburgers.nomoreparties.site/login"
+            assert current_url == expected_url

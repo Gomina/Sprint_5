@@ -41,6 +41,7 @@ class TestLocators:
 # Поле "Email". Страница "Восстановление пароля"
     LOCATOR_EMAIL_PASSWORD_RECOVERY = By.XPATH, "//input[@type='text' and @name='name']"
 
+
 # Кнопка "Восстановить". Страница "Восстановление пароля"
     LOCATOR_RECOVER_BUTTON = By.XPATH, "//button[text()='Восстановить']"
 
